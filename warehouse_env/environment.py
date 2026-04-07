@@ -175,13 +175,18 @@ class WarehouseRobotEnv:
         )
 
     def grade_episode(self) -> float:
+        eps = 0.01
+
+        def strict_unit_interval(value: float) -> float:
+            return max(eps, min(1.0 - eps, value))
+
         progress = ordered_subgoal_progress(self._task, self._completed_subgoals)
         if self._task.task_id == "easy_pick_and_stage":
             base = progress
             if "placed_tote_red" in self._completed_subgoals:
                 base = 1.0
             penalty = min(0.4, 0.08 * self._invalid_actions)
-            return max(0.0, min(1.0, base - penalty))
+            return strict_unit_interval(base - penalty)
 
         if self._task.task_id == "medium_qc_and_pack":
             has_scan = "scanned_crate_blue_at_qc" in self._completed_subgoals
@@ -192,7 +197,7 @@ class WarehouseRobotEnv:
             elif has_place and not has_scan:
                 base = 0.6
             penalty = min(0.5, 0.07 * self._invalid_actions)
-            return max(0.0, min(1.0, base - penalty))
+            return strict_unit_interval(base - penalty)
 
         if self._task.task_id == "hard_fragile_pack_and_dock":
             has_checkpoint = "passed_checkpoint_1" in self._completed_subgoals
@@ -202,9 +207,9 @@ class WarehouseRobotEnv:
             if has_checkpoint and has_place and has_dock:
                 base = 1.0
             penalty = min(0.6, 0.06 * self._invalid_actions + 0.1 * self._repeat_penalties)
-            return max(0.0, min(1.0, base - penalty))
+            return strict_unit_interval(base - penalty)
 
-        return max(0.0, min(1.0, progress))
+        return strict_unit_interval(progress)
 
     def _coerce_action(self, action: RobotAction | dict[str, Any]) -> RobotAction:
         if isinstance(action, RobotAction):
