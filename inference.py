@@ -44,9 +44,11 @@ def load_dotenv(path: Path) -> None:
 
 load_dotenv(ROOT / ".env")
 
-API_BASE_URL = os.getenv("API_BASE_URL")
-MODEL_NAME = os.getenv("MODEL_NAME")
+API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
+# Optional (used when environments are created from docker images)
+LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 BENCHMARK = "warehouse_isaac_openenv"
 SUCCESS_SCORE_THRESHOLD = 0.80
 

@@ -1,3 +1,13 @@
+---
+title: warehouse-issac-openenv
+emoji: "🤖"
+colorFrom: blue
+colorTo: gray
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # Warehouse Isaac OpenEnv
 
 A real-world warehouse fulfillment simulation environment designed for agent training with the OpenEnv API.
