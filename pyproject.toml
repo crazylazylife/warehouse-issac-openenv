@@ -1,0 +1,34 @@
+[project]
+name = "warehouse-isaac-openenv"
+version = "0.1.0"
+description = "OpenEnv-compatible real-world warehouse robot simulation with Isaac Sim bridge"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "openenv-core>=0.2.0",
+  "pydantic>=2.7.0",
+  "fastapi>=0.115.0",
+  "uvicorn>=0.30.0",
+  "pyyaml>=6.0.2",
+  "httpx>=0.28.0",
+  "openai>=1.51.0",
+]
+
+[project.scripts]
+server = "server.app:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0",
+  "ruff>=0.6.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["warehouse_env", "server"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

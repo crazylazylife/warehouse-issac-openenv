@@ -1,0 +1,21 @@
+version: 1
+name: warehouse_isaac_openenv
+description: |
+  A real-world warehouse fulfillment robot environment with deterministic
+  task graders and dense reward shaping. Implements OpenEnv-style
+  step()/reset()/state() semantics with typed models.
+entrypoint: server.app:app
+tags:
+  - robotics
+  - warehouse
+  - fulfillment
+  - openenv
+metadata:
+  author: hackathon-team
+  difficulty_levels:
+    - easy
+    - medium
+    - hard
+  action_model: warehouse_env.models.RobotAction
+  observation_model: warehouse_env.models.RobotObservation
+  reward_model: warehouse_env.models.RewardSignal
