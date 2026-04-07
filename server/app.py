@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from fastapi import FastAPI
@@ -39,17 +40,20 @@ def _create_fallback_app() -> FastAPI:
     return app
 
 
-# Prefer native OpenEnv server wrapper when available.
-try:
-    from openenv.core.env_server.http_server import create_app  # type: ignore
+# Default to stable fallback app. OpenEnv wrapper can be enabled explicitly.
+if os.getenv("USE_OPENENV_CREATE_APP", "0") == "1":
+    try:
+        from openenv.core.env_server.http_server import create_app  # type: ignore
 
-    app = create_app(
-        WarehouseRobotEnv,
-        RobotAction,
-        RobotObservation,
-        env_name="warehouse_isaac_openenv",
-    )
-except Exception:
+        app = create_app(
+            WarehouseRobotEnv,
+            RobotAction,
+            RobotObservation,
+            env_name="warehouse_isaac_openenv",
+        )
+    except Exception:
+        app = _create_fallback_app()
+else:
     app = _create_fallback_app()
 
 
